@@ -1,0 +1,14 @@
+class Solution {
+    public boolean hasAlternatingBits(int n) {
+        String binary_number=Integer.toBinaryString(n);
+        for(int i=1;i<binary_number.length();i++){
+            char ch=binary_number.charAt(i);
+            if((ch=='1' && binary_number.charAt(i-1)=='1') || (ch=='0' && binary_number.charAt(i-1)=='0' )){
+                return false;
+               
+            }
+           
+        }
+        return true;
+    }
+}
