@@ -1,0 +1,44 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int ele : nums) sum += ele;
+
+        if (sum % 2 != 0) return false;
+
+        int target = sum / 2;
+
+        int[][] dp = new int[nums.length][target + 1];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j <= target; j++) {
+                dp[i][j] = -1;
+            }
+        }
+
+        return subset(0, nums, target, dp);
+    }
+
+    public boolean subset(int i, int[] arr, int target, int[][] dp) {
+
+        // ✅ If target becomes 0 → subset found
+        if (target == 0) return true;
+
+        // ❌ If index out of bounds OR target negative
+        if (i == arr.length || target < 0) return false;
+
+        if (dp[i][target] != -1) {
+            return dp[i][target] == 1;
+        }
+
+        // Option 1: Pick
+        boolean pick = subset(i + 1, arr, target - arr[i], dp);
+
+        // Option 2: Skip
+        boolean skip = subset(i + 1, arr, target, dp);
+
+        boolean ans = pick || skip;
+
+        dp[i][target] = ans ? 1 : 0;
+
+        return ans;
+    }
+}
