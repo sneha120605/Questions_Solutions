@@ -1,0 +1,30 @@
+
+import java.util.Arrays;
+
+class Solution {
+    public int robbing(int[] nums, int i, int[] dp, int end) {
+        if (i > end) return 0;
+
+        if (dp[i] != -1) return dp[i];
+
+        int take = nums[i] + robbing(nums, i + 2, dp, end);
+        int skip = robbing(nums, i + 1, dp, end);
+
+        return dp[i] = Math.max(take, skip);
+    }
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+
+        if (n == 1) return nums[0];
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        int first = robbing(nums, 0, dp, n - 2);
+
+        Arrays.fill(dp, -1);
+        int second = robbing(nums, 1, dp, n - 1);
+
+        return Math.max(first, second);
+    }
+}
