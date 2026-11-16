@@ -1,0 +1,54 @@
+
+class Solution {
+    public String digitSum(String s, int k) {
+
+        while (s.length() > k) {
+
+            int length = s.length();
+
+            int n = length / k;
+            int eq = length % k;
+
+            int size = n;
+            if (eq != 0) {
+                size++;
+            }
+
+            int[] arr = new int[size];
+
+            int index = 0;
+            int count = 0;
+
+            // Complete groups
+            for (int i = 0; i < n; i++) {
+
+                for (int j = 0; j < k; j++) {
+                    arr[index] += s.charAt(count) - '0';
+                    count++;
+                }
+
+                index++;
+            }
+
+            // Remaining characters
+            if (eq != 0) {
+
+                for (int i = 0; i < eq; i++) {
+                    arr[index] += s.charAt(count) - '0';
+                    count++;
+                }
+            }
+
+            // Convert array into string
+            String result = "";
+
+            for (int i = 0; i < arr.length; i++) {
+                result += arr[i];
+            }
+
+            s = result;
+        }
+
+        return s;
+    }
+}
