@@ -1,0 +1,25 @@
+
+class Solution {
+    public int count(int[][] matrix, int m, int n) {
+        int counting = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 1) {
+                    if (i != 0 && j != 0) {
+                        int a = matrix[i-1][j];
+                        int b = matrix[i][j-1];
+                        int c = matrix[i-1][j-1];
+                        matrix[i][j] = Math.min(a, Math.min(b, c)) + 1;
+                    }
+                    counting += matrix[i][j];
+                }
+            }
+        }
+        return counting;
+    }
+    public int countSquares(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        return count(matrix, m, n);
+    }
+}
