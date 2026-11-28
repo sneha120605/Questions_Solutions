@@ -1,0 +1,58 @@
+
+import java.util.*;
+
+class Solution {
+    public int maximumSaleItems(int[][] items, int budget) {
+
+        int n = items.length;
+        int maxFactor = n;
+
+        // Step 1: Count frequency of each factor
+        int[] freq = new int[maxFactor + 1];
+
+        int minPrice = Integer.MAX_VALUE;
+
+        for (int[] item : items) {
+            freq[item[0]]++;
+            minPrice = Math.min(minPrice, item[1]);
+        }
+
+        // Step 2: Count all divisible item types
+        for (int i = 1; i <= maxFactor; i++) {
+            for (int j = 2 * i; j <= maxFactor; j += i) {
+                freq[i] += freq[j];
+            }
+        }
+
+        // Step 3: Sort items by price
+        Arrays.sort(items, (a, b) -> Integer.compare(a[1], b[1]));
+
+        long ans = 0;
+        long remaining = budget;
+
+        // Step 4: Buy items that give 2 copies per purchase
+        for (int[] item : items) {
+
+            int factor = item[0];
+            int price = item[1];
+
+            // Number of possible free item types
+            int gain = freq[factor] - 1;
+
+            // Buying these is worthwhile if price <= 2 * minPrice
+            if (price > 2L * minPrice) {
+                break;
+            }
+
+            long count = Math.min(gain, remaining / price);
+
+            ans += count * 2;
+            remaining -= count * price;
+        }
+
+        // Step 5: Spend remaining budget on cheapest items
+        ans += remaining / minPrice;
+
+        return (int) ans;
+    }
+}
